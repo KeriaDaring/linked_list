@@ -8,8 +8,5 @@ pub fn test() {
     list.push(1);
 }
 
-fn main() {
-    test();
-    println!("hello");
-}
+
 
