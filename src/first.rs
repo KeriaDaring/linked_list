@@ -42,8 +42,44 @@ impl List {
         self.head = Link::More(Box::new(new_node));
     }
 
-    pub fn pop(&mut self) {
-        
+    pub fn pop(&mut self) -> Option<i32> {
+        match std::mem::replace(&mut self.head, Link::Empty) {
+            Link::Empty => None,
+            Link::More(val) => {
+                self.head = val.next;
+                Some(val.val)
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+
+    use super::List;
+
+    #[test]
+    fn basic() {
+        let mut list = List::new();
+
+        list.push(1);
+        list.push(2);
+        list.push(3);
+
+        assert_eq!(list.pop(), Some(3));
+        assert_eq!(list.pop(), Some(2));
+
+
+        list.push(4);
+        list.push(5);
+
+        assert_eq!(list.pop(), Some(5));
+        assert_eq!(list.pop(), Some(4));
+
+        assert_eq!(list.pop(), Some(1));
+
+        assert_eq!(list.pop(), None);
+
     }
 }
 
