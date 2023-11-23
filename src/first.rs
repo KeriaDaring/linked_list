@@ -13,6 +13,19 @@
 
 //因此在这里思考 既要使用空指针优化又要让枚举中为智能指针 所以如下
 
+
+use std::mem;
+
+impl Drop for List {
+    fn drop(&mut self) {
+        let mut cur_link = mem::replace(&mut self.head, Link::Empty);
+        while let Link::More(mut boxed_node) = cur_link {
+            cur_link = mem::replace(&mut boxed_node.next, Link::Empty);
+        }
+
+    }
+}
+
 pub struct List {
     head: Link, //结构体的大小和字段的大小相加相等， 这里是一个零成本的抽象
 }
